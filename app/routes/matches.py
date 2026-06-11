@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.services.worldcup import get_games
+from app.services.worldcup import get_games, get_stadiums
 
 router = APIRouter()
 
@@ -8,6 +8,12 @@ router = APIRouter()
 def get_matches(teams: str | None = None):
 
     data = get_games()
+    stadiums = get_stadiums()
+
+    stadium_lookup = {
+    stadium["id"]: stadium["name_en"]
+    for stadium in stadiums["stadiums"]
+}
 
     matches = []
 
@@ -21,7 +27,10 @@ def get_matches(teams: str | None = None):
                 "group": game.get("group"),
                 "matchday": game.get("matchday"),
                 "date": game.get("local_date"),
-                "stadium": game.get("stadium_id"),
+                "stadium": stadium_lookup.get(
+    game.get("stadium_id"),
+    "Unknown Stadium"
+),
                 "finished": game.get("finished"),
                 "time_elapsed": game.get("time_elapsed"),
                 "type": game.get("type"),
