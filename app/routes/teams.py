@@ -1,19 +1,16 @@
 from fastapi import APIRouter
-import json
-
+from app.services.worldcup import get_teams as fetch_teams
 
 router = APIRouter()
 
 @router.get("/teams")
 def get_teams():
 
-    with open("data/matches.json", "r", encoding="utf-8") as f:
-        matches = json.load(f)
+    data = fetch_teams()
 
-    teams = set()
+    teams = sorted([
+        team["name_en"]
+        for team in data["teams"]
+    ])
 
-    for match in matches:
-        teams.add(match["home_team"])
-        teams.add(match["away_team"])
-
-    return sorted(list(teams))
+    return teams
