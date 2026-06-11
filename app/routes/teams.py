@@ -9,4 +9,7 @@ def get_teams():
 
     data = fetch_teams()
 
-    return data["teams"]
+    return [
+        team["name_en"]
+        for team in data["teams"]
+    ]
