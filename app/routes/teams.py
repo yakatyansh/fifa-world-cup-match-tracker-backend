@@ -9,4 +9,4 @@ def get_teams():
 
     data = fetch_teams()
 
-    return data
+    return data["teams"]
