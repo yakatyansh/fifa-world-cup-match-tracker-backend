@@ -1,15 +1,92 @@
 import requests
 
+from app.services.cache import (
+    get_cache,
+    set_cache,
+)
+
 BASE_URL = "https://worldcup26.ir"
 
+session = requests.Session()
+
+HEADERS = {
+    "User-Agent": "WC26Tracker/1.0"
+}
+
+
 def get_teams():
-    response = requests.get(f"{BASE_URL}/get/teams")
-    return response.json()
+
+    cached = get_cache("teams")
+
+    if cached:
+        return cached
+
+    response = session.get(
+        f"{BASE_URL}/get/teams",
+        headers=HEADERS,
+        timeout=10
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    set_cache(
+        "teams",
+        data,
+        86400
+    )
+
+    return data
+
 
 def get_games():
-    response = requests.get(f"{BASE_URL}/get/games")
-    return response.json()
+
+    cached = get_cache("games")
+
+    if cached:
+        return cached
+
+    response = session.get(
+        f"{BASE_URL}/get/games",
+        headers=HEADERS,
+        timeout=10
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    set_cache(
+        "games",
+        data,
+        900
+    )
+
+    return data
+
 
 def get_stadiums():
-    response = requests.get(f"{BASE_URL}/get/stadiums")
-    return response.json()
+
+    cached = get_cache("stadiums")
+
+    if cached:
+        return cached
+
+    response = session.get(
+        f"{BASE_URL}/get/stadiums",
+        headers=HEADERS,
+        timeout=10
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    set_cache(
+        "stadiums",
+        data,
+        86400
+    )
+
+    return data

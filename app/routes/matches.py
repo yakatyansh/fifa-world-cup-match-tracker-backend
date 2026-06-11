@@ -28,9 +28,9 @@ def get_matches(teams: str | None = None):
                 "matchday": game.get("matchday"),
                 "date": game.get("local_date"),
                 "stadium": stadium_lookup.get(
-    game.get("stadium_id"),
-    "Unknown Stadium"
-),
+                    game.get("stadium_id"),
+                        "Unknown Stadium"
+                        ),
                 "finished": game.get("finished"),
                 "time_elapsed": game.get("time_elapsed"),
                 "type": game.get("type"),
