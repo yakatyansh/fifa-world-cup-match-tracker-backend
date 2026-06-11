@@ -11,37 +11,39 @@ def get_matches(teams: str | None = None):
 
     matches = []
 
-    for game in data["games"]:
+    for game in data.get("games", []):
+
         matches.append(
             {
-                "id": game["id"],
-                "home_team": game["home_team_name_en"],
-                "away_team": game["away_team_name_en"],
-                "group": game["group"],
-                "matchday": game["matchday"],
-                "date": game["local_date"],
-                "stadium_id": game["stadium_id"],
-                "finished": game["finished"],
-                "time_elapsed": game["time_elapsed"],
-                "type": game["type"],
-                "home_score": game["home_score"],
-                "away_score": game["away_score"]
+                "id": game.get("id"),
+                "home_team": game.get("home_team_name_en"),
+                "away_team": game.get("away_team_name_en"),
+                "group": game.get("group"),
+                "matchday": game.get("matchday"),
+                "date": game.get("local_date"),
+                "stadium": game.get("stadium_id"),
+                "finished": game.get("finished"),
+                "time_elapsed": game.get("time_elapsed"),
+                "type": game.get("type"),
+                "home_score": game.get("home_score"),
+                "away_score": game.get("away_score"),
             }
         )
 
     if teams:
 
-        team_list = [
-            team.strip()
+        team_set = {
+            team.strip().lower()
             for team in teams.split(",")
-        ]
+        }
 
         matches = [
             match
             for match in matches
             if (
-                match["home_team"] in team_list
-                or match["away_team"] in team_list
+                (match["home_team"] or "").lower() in team_set
+                or
+                (match["away_team"] or "").lower() in team_set
             )
         ]
 
