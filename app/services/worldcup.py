@@ -44,26 +44,37 @@ def get_games():
 
     cached = get_cache("games")
 
-    if cached:
-        return cached
+    try:
 
-    response = session.get(
-        f"{BASE_URL}/get/games",
-        headers=HEADERS,
-        timeout=10
-    )
+        response = session.get(
+            f"{BASE_URL}/get/games",
+            headers=HEADERS,
+            timeout=10
+        )
 
-    response.raise_for_status()
+        response.raise_for_status()
 
-    data = response.json()
+        data = response.json()
 
-    set_cache(
-        "games",
-        data,
-        900
-    )
+        set_cache(
+            "games",
+            data,
+            900
+        )
 
-    return data
+        print("Games API success")
+
+        return data
+
+    except Exception as e:
+
+        print(f"Games API failed: {e}")
+
+        if cached:
+            print("Returning cached games")
+            return cached
+
+        raise
 
 
 def get_stadiums():

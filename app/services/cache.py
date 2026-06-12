@@ -1,5 +1,3 @@
-# app/services/cache.py
-
 import time
 
 CACHE = {}
