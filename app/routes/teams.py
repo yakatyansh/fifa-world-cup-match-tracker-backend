@@ -10,6 +10,12 @@ def get_teams():
     data = fetch_teams()
 
     return [
-        team["name_en"]
+        {
+            "id": team["id"],
+            "name_en": team["name_en"],
+            "flag": team["flag"],
+            "iso2": team["iso2"],
+            "group": team["groups"],
+        }
         for team in data["teams"]
     ]
