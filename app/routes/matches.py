@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.services.worldcup import get_games, get_stadiums
+from app.services.timezone import convert_to_ist
 
 router = APIRouter()
 
@@ -50,7 +51,7 @@ def get_matches(teams: str | None = None):
                 "away_team": game.get("away_team_name_en"),
                 "group": game.get("group"),
                 "matchday": game.get("matchday"),
-                "date": game.get("local_date"),
+                "date": convert_to_ist(game.get("local_date")),
                 "stadium": stadium_lookup.get(
                     game.get("stadium_id"),
                         "Unknown Stadium"
