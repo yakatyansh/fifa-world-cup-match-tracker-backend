@@ -2,6 +2,7 @@ import requests
 
 from app.services.cache import (
     get_cache,
+    get_stale_cache,
     set_cache,
 )
 
@@ -17,6 +18,7 @@ HEADERS = {
 def get_teams():
 
     cached = get_cache("teams")
+    
 
     if cached:
         return cached
@@ -43,9 +45,18 @@ def get_teams():
 def get_games():
 
     cached = get_cache("games")
+    stale = get_stale_cache("games")
+    print(f"Games cache exists: {cached is not None}")
+
+    if cached:
+        print("Returning cached games")
+        return cached
+    
+    if stale:
+        print("Returning stale games")
+        return stale
 
     try:
-
         response = session.get(
             f"{BASE_URL}/get/games",
             headers=HEADERS,
@@ -67,15 +78,10 @@ def get_games():
         return data
 
     except Exception as e:
-
         print(f"Games API failed: {e}")
-
-        if cached:
-            print("Returning cached games")
-            return cached
-
+        if stale is not None:
+            return stale
         raise
-
 
 def get_stadiums():
 

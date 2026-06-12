@@ -1,6 +1,17 @@
+
 import time
 
 CACHE = {}
+
+
+def get_stale_cache(key):
+
+    item = CACHE.get(key)
+
+    if not item:
+        return None
+
+    return item["data"]
 
 
 def get_cache(key):
@@ -21,4 +32,5 @@ def set_cache(key, data, ttl):
     CACHE[key] = {
         "data": data,
         "expires": time.time() + ttl,
+        
     }
