@@ -4,17 +4,29 @@ from app.services.worldcup import get_games, get_stadiums
 router = APIRouter()
 
 def parse_scorers(scorers):
-   if not scorers or scorers == "null":
-    return []
-   
-   scorers = scorers.split(",")
 
-   if not scorers:
+    if scorers is None:
+        return []
+
+    if scorers == "null":
+        return []
+
+    if isinstance(scorers, list):
+        return scorers
+
+    if isinstance(scorers, str):
+
+        scorers = scorers.strip("{}")
+
+        if not scorers:
+            return []
+
+        return [
+            scorer.strip('"')
+            for scorer in scorers.split(",")
+        ]
+
     return []
-   return [
-    scorer.strip('"')
-    for scorer in scorers.split(",")
-   ]
 
 @router.get("/matches")
 def get_matches(teams: str | None = None):
