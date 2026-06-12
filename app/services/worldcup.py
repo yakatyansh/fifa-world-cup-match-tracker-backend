@@ -59,10 +59,10 @@ def get_games():
         set_cache(
             "games",
             data,
-            900
+            60
         )
 
-        print("Games API success")
+        print(f"Games API success | Cached for 60 seconds")
 
         return data
 
