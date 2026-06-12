@@ -46,15 +46,12 @@ def get_games():
 
     cached = get_cache("games")
     stale = get_stale_cache("games")
+
     print(f"Games cache exists: {cached is not None}")
 
     if cached:
         print("Returning cached games")
         return cached
-    
-    if stale:
-        print("Returning stale games")
-        return stale
 
     try:
         response = session.get(
@@ -73,16 +70,19 @@ def get_games():
             30
         )
 
-        print(f"Games API success | Cached for 60 seconds")
+        print("Games API success | Cached for 30 seconds")
 
         return data
 
     except Exception as e:
-        print(f"Games API failed: {e}")
-        if stale is not None:
-            return stale
-        raise
 
+        print(f"Games API failed: {e}")
+
+        if stale is not None:
+            print("Returning stale games")
+            return stale
+
+        raise
 def get_stadiums():
 
     cached = get_cache("stadiums")
