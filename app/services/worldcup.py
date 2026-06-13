@@ -26,7 +26,7 @@ def get_teams():
     response = session.get(
         f"{BASE_URL}/get/teams",
         headers=HEADERS,
-        timeout=5
+        timeout=10
     )
 
     response.raise_for_status()
@@ -57,7 +57,7 @@ def get_games():
         response = session.get(
             f"{BASE_URL}/get/games",
             headers=HEADERS,
-            timeout=5
+            timeout=10
         )
 
         response.raise_for_status()
