@@ -57,7 +57,7 @@ def get_games():
         response = session.get(
             f"{BASE_URL}/get/games",
             headers=HEADERS,
-            timeout=10
+            timeout=5
         )
 
         response.raise_for_status()
