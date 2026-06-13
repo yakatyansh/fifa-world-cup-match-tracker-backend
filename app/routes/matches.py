@@ -44,6 +44,14 @@ def get_matches(teams: str | None = None):
 
     for game in data.get("games", []):
 
+        print(
+    "DEBUG:",
+    game.get("home_score"),
+    game.get("away_score"),
+    game.get("matchday"),
+    game.get("persian_date"),
+)
+
         matches.append(
             {
                 "id": game.get("id"),
